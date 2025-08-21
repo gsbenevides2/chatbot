@@ -1,3 +1,4 @@
+import console from "node:console";
 import { Elysia, StatusMap, t } from "elysia";
 import { ChatbotService } from "../../services/Chatbot";
 
@@ -15,11 +16,13 @@ export const ChatbotController = new Elysia({
 }).post(
 	"/",
 	({ body, status }) => {
-		if ("message" in body) {
-			const chatbotService = new ChatbotService();
-			chatbotService.receiveMessage(body.message);
-		}
-		status(StatusMap["No Content"], undefined);
+		const chatbotService = new ChatbotService();
+		chatbotService.receiveMessage(body).catch((error) => {
+			console.error(error);
+			chatbotService.sendErrorMessage();
+			//status(StatusMap["Internal Server Error"], error);
+		});
+		return status(StatusMap["No Content"], undefined);
 	},
 	{
 		body: t.Union(

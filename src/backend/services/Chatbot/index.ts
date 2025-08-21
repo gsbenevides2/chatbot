@@ -1,5 +1,16 @@
 import { discordClient } from "../../clients/discord";
+import { AudioToText } from "../Google/AudioToText";
+import { PrepareAndUploadImage } from "../Google/PrepareAndUploadImage";
 import { AnthropicService } from "./Antropic";
+
+type ReceivedMessage =
+	| {
+			message: string;
+			images?: string[];
+	  }
+	| {
+			audio: string;
+	  };
 
 export class ChatbotService {
 	sendedMessageCounter = 0;
@@ -37,13 +48,38 @@ export class ChatbotService {
 		}
 	}
 
-	async receiveMessage(message: string) {
-		await this.sendMessage(
-			"Aguarde um momento, estou processando sua mensagem...",
-		);
+	async receiveMessage(message: ReceivedMessage) {
 		const anthropicService = new AnthropicService();
 
-		anthropicService.addUserMessageToHistory(message);
+		let textMessage = "";
+		// Special for audio case
+		if ("audio" in message) {
+			await this.sendMessage(
+				"Aguarde um momento, estou ouvindo sua mensagem...",
+			);
+			const audioToText = new AudioToText();
+			textMessage = await audioToText.convert(message.audio);
+		} else {
+			textMessage = message.message;
+		}
+		const hasImages =
+			"images" in message && message.images && message.images.length > 0;
+		if (hasImages) {
+			await this.sendMessage(
+				"Aguarde um momento, estou preparando as imagens...",
+			);
+			const prepareAndUploadImage = new PrepareAndUploadImage();
+			const images = await prepareAndUploadImage.prepareMultipleImages(
+				"images" in message ? (message.images ?? []) : [],
+			);
+			anthropicService.addImagesToHistory(images);
+		}
+
+		// Continue
+		await this.sendMessage("Aguarde um momento, estou pensando...");
+		this.sendedMessageCounter = 1;
+
+		anthropicService.addUserMessageToHistory(textMessage);
 		while (true) {
 			const response = await anthropicService.getResponse();
 			for (const content of response.content) {
@@ -67,5 +103,11 @@ export class ChatbotService {
 				break;
 			}
 		}
+	}
+
+	async sendErrorMessage() {
+		await this.sendMessage(
+			"Desculpe, mas eu não consegui processar sua mensagem. Por favor, tente novamente.",
+		);
 	}
 }

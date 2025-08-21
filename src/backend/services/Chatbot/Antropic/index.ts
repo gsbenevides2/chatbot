@@ -32,6 +32,17 @@ export class AnthropicService {
 		});
 	}
 
+	addImagesToHistory(images: string[]) {
+		if (images.length === 0) return;
+		this.messageHistory.push({
+			role: "user",
+			content: images.map((image) => ({
+				type: "image",
+				source: { type: "url", url: image },
+			})),
+		});
+	}
+
 	addCurrentResultToHistory(messages: Anthropic.ContentBlock[]) {
 		this.messageHistory.push({
 			role: "assistant",
