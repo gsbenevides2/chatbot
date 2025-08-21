@@ -17,7 +17,8 @@
 		"rules": {
 			"recommended": true,
 			"complexity": {
-				"noStaticOnlyClass": "off"
+				"noStaticOnlyClass": "off",
+				"useLiteralKeys": "off"
 			}
 		}
 	},

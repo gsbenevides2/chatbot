@@ -4,388 +4,388 @@
  */
 
 export interface paths {
-    "/health": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Coolify Utils
-         * @description Health check for coolify
-         */
-        get: operations["getHealth"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/messages/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send Message
-         * @description Send a message to the user
-         */
-        post: operations["postApiMessages"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/messages/{messageId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Edit Message
-         * @description Edit a specific sended message
-         */
-        post: operations["postApiMessagesByMessageId"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
+	"/health": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Coolify Utils
+		 * @description Health check for coolify
+		 */
+		get: operations["getHealth"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/messages/": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Send Message
+		 * @description Send a message to the user
+		 */
+		post: operations["postApiMessages"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/messages/{messageId}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Edit Message
+		 * @description Edit a specific sended message
+		 */
+		post: operations["postApiMessagesByMessageId"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: never;
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+	schemas: never;
+	responses: never;
+	parameters: never;
+	requestBodies: never;
+	headers: never;
+	pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    getHealth: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /**
-             * @description Health check for coolify
-             * @example OK
-             */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                    "multipart/form-data": string;
-                    "text/plain": string;
-                };
-            };
-        };
-    };
-    postApiMessages: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    /**
-                     * Text message
-                     * @description Text message to be sent
-                     * @example Hello, how are you?
-                     * @example How are you doing?
-                     */
-                    message: string;
-                };
-                "multipart/form-data": {
-                    /**
-                     * Text message
-                     * @description Text message to be sent
-                     * @example Hello, how are you?
-                     * @example How are you doing?
-                     */
-                    message: string;
-                };
-                "text/plain": {
-                    /**
-                     * Text message
-                     * @description Text message to be sent
-                     * @example Hello, how are you?
-                     * @example How are you doing?
-                     */
-                    message: string;
-                };
-            };
-        };
-        responses: {
-            /**
-             * Message
-             * @description Message to be sent
-             * @example {
-             *       "message": "Hello, how are you?"
-             *     }
-             */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * Discord Message ID
-                         * @description Discord Message ID generated after sending the message
-                         * @example 1234567890
-                         */
-                        messageId: string;
-                    };
-                    "multipart/form-data": {
-                        /**
-                         * Discord Message ID
-                         * @description Discord Message ID generated after sending the message
-                         * @example 1234567890
-                         */
-                        messageId: string;
-                    };
-                    "text/plain": {
-                        /**
-                         * Discord Message ID
-                         * @description Discord Message ID generated after sending the message
-                         * @example 1234567890
-                         */
-                        messageId: string;
-                    };
-                };
-            };
-            /**
-             * Error
-             * @description Error message
-             * @example {
-             *       "error": "You do not have permission to use this bot."
-             *     }
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * Error message
-                         * @description Error message
-                         * @example You do not have permission to use this bot.
-                         */
-                        error: string;
-                    };
-                    "multipart/form-data": {
-                        /**
-                         * Error message
-                         * @description Error message
-                         * @example You do not have permission to use this bot.
-                         */
-                        error: string;
-                    };
-                    "text/plain": {
-                        /**
-                         * Error message
-                         * @description Error message
-                         * @example You do not have permission to use this bot.
-                         */
-                        error: string;
-                    };
-                };
-            };
-            /**
-             * Unauthorized
-             * @description Unauthorized
-             * @example {
-             *       "error": "Missing Authorization header or invalid token"
-             *     }
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * @description Missing Authorization header or invalid token
-                         * @example Missing Authorization header or invalid token
-                         */
-                        error: string;
-                    };
-                    "multipart/form-data": {
-                        /**
-                         * @description Missing Authorization header or invalid token
-                         * @example Missing Authorization header or invalid token
-                         */
-                        error: string;
-                    };
-                    "text/plain": {
-                        /**
-                         * @description Missing Authorization header or invalid token
-                         * @example Missing Authorization header or invalid token
-                         */
-                        error: string;
-                    };
-                };
-            };
-        };
-    };
-    postApiMessagesByMessageId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /**
-                 * @description Discord Message ID
-                 * @example 1234567890
-                 */
-                messageId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    /**
-                     * Text message
-                     * @description Text message that will replace the original message
-                     * @example Hello, how are you?
-                     * @example How are you doing?
-                     */
-                    message: string;
-                };
-                "multipart/form-data": {
-                    /**
-                     * Text message
-                     * @description Text message that will replace the original message
-                     * @example Hello, how are you?
-                     * @example How are you doing?
-                     */
-                    message: string;
-                };
-                "text/plain": {
-                    /**
-                     * Text message
-                     * @description Text message that will replace the original message
-                     * @example Hello, how are you?
-                     * @example How are you doing?
-                     */
-                    message: string;
-                };
-            };
-        };
-        responses: {
-            /**
-             * Success message
-             * @description Success message
-             * @example Message edited
-             */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                    "multipart/form-data": string;
-                    "text/plain": string;
-                };
-            };
-            /**
-             * Error
-             * @description Error message
-             * @example {
-             *       "error": "You do not have permission to use this bot."
-             *     }
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * Error message
-                         * @description Error message
-                         * @example You do not have permission to use this bot.
-                         */
-                        error: string;
-                    };
-                    "multipart/form-data": {
-                        /**
-                         * Error message
-                         * @description Error message
-                         * @example You do not have permission to use this bot.
-                         */
-                        error: string;
-                    };
-                    "text/plain": {
-                        /**
-                         * Error message
-                         * @description Error message
-                         * @example You do not have permission to use this bot.
-                         */
-                        error: string;
-                    };
-                };
-            };
-            /**
-             * Unauthorized
-             * @description Unauthorized
-             * @example {
-             *       "error": "Missing Authorization header or invalid token"
-             *     }
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * @description Missing Authorization header or invalid token
-                         * @example Missing Authorization header or invalid token
-                         */
-                        error: string;
-                    };
-                    "multipart/form-data": {
-                        /**
-                         * @description Missing Authorization header or invalid token
-                         * @example Missing Authorization header or invalid token
-                         */
-                        error: string;
-                    };
-                    "text/plain": {
-                        /**
-                         * @description Missing Authorization header or invalid token
-                         * @example Missing Authorization header or invalid token
-                         */
-                        error: string;
-                    };
-                };
-            };
-        };
-    };
+	getHealth: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/**
+			 * @description Health check for coolify
+			 * @example OK
+			 */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": string;
+					"multipart/form-data": string;
+					"text/plain": string;
+				};
+			};
+		};
+	};
+	postApiMessages: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					/**
+					 * Text message
+					 * @description Text message to be sent
+					 * @example Hello, how are you?
+					 * @example How are you doing?
+					 */
+					message: string;
+				};
+				"multipart/form-data": {
+					/**
+					 * Text message
+					 * @description Text message to be sent
+					 * @example Hello, how are you?
+					 * @example How are you doing?
+					 */
+					message: string;
+				};
+				"text/plain": {
+					/**
+					 * Text message
+					 * @description Text message to be sent
+					 * @example Hello, how are you?
+					 * @example How are you doing?
+					 */
+					message: string;
+				};
+			};
+		};
+		responses: {
+			/**
+			 * Message
+			 * @description Message to be sent
+			 * @example {
+			 *       "message": "Hello, how are you?"
+			 *     }
+			 */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						/**
+						 * Discord Message ID
+						 * @description Discord Message ID generated after sending the message
+						 * @example 1234567890
+						 */
+						messageId: string;
+					};
+					"multipart/form-data": {
+						/**
+						 * Discord Message ID
+						 * @description Discord Message ID generated after sending the message
+						 * @example 1234567890
+						 */
+						messageId: string;
+					};
+					"text/plain": {
+						/**
+						 * Discord Message ID
+						 * @description Discord Message ID generated after sending the message
+						 * @example 1234567890
+						 */
+						messageId: string;
+					};
+				};
+			};
+			/**
+			 * Error
+			 * @description Error message
+			 * @example {
+			 *       "error": "You do not have permission to use this bot."
+			 *     }
+			 */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						/**
+						 * Error message
+						 * @description Error message
+						 * @example You do not have permission to use this bot.
+						 */
+						error: string;
+					};
+					"multipart/form-data": {
+						/**
+						 * Error message
+						 * @description Error message
+						 * @example You do not have permission to use this bot.
+						 */
+						error: string;
+					};
+					"text/plain": {
+						/**
+						 * Error message
+						 * @description Error message
+						 * @example You do not have permission to use this bot.
+						 */
+						error: string;
+					};
+				};
+			};
+			/**
+			 * Unauthorized
+			 * @description Unauthorized
+			 * @example {
+			 *       "error": "Missing Authorization header or invalid token"
+			 *     }
+			 */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						/**
+						 * @description Missing Authorization header or invalid token
+						 * @example Missing Authorization header or invalid token
+						 */
+						error: string;
+					};
+					"multipart/form-data": {
+						/**
+						 * @description Missing Authorization header or invalid token
+						 * @example Missing Authorization header or invalid token
+						 */
+						error: string;
+					};
+					"text/plain": {
+						/**
+						 * @description Missing Authorization header or invalid token
+						 * @example Missing Authorization header or invalid token
+						 */
+						error: string;
+					};
+				};
+			};
+		};
+	};
+	postApiMessagesByMessageId: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/**
+				 * @description Discord Message ID
+				 * @example 1234567890
+				 */
+				messageId: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					/**
+					 * Text message
+					 * @description Text message that will replace the original message
+					 * @example Hello, how are you?
+					 * @example How are you doing?
+					 */
+					message: string;
+				};
+				"multipart/form-data": {
+					/**
+					 * Text message
+					 * @description Text message that will replace the original message
+					 * @example Hello, how are you?
+					 * @example How are you doing?
+					 */
+					message: string;
+				};
+				"text/plain": {
+					/**
+					 * Text message
+					 * @description Text message that will replace the original message
+					 * @example Hello, how are you?
+					 * @example How are you doing?
+					 */
+					message: string;
+				};
+			};
+		};
+		responses: {
+			/**
+			 * Success message
+			 * @description Success message
+			 * @example Message edited
+			 */
+			204: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": string;
+					"multipart/form-data": string;
+					"text/plain": string;
+				};
+			};
+			/**
+			 * Error
+			 * @description Error message
+			 * @example {
+			 *       "error": "You do not have permission to use this bot."
+			 *     }
+			 */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						/**
+						 * Error message
+						 * @description Error message
+						 * @example You do not have permission to use this bot.
+						 */
+						error: string;
+					};
+					"multipart/form-data": {
+						/**
+						 * Error message
+						 * @description Error message
+						 * @example You do not have permission to use this bot.
+						 */
+						error: string;
+					};
+					"text/plain": {
+						/**
+						 * Error message
+						 * @description Error message
+						 * @example You do not have permission to use this bot.
+						 */
+						error: string;
+					};
+				};
+			};
+			/**
+			 * Unauthorized
+			 * @description Unauthorized
+			 * @example {
+			 *       "error": "Missing Authorization header or invalid token"
+			 *     }
+			 */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						/**
+						 * @description Missing Authorization header or invalid token
+						 * @example Missing Authorization header or invalid token
+						 */
+						error: string;
+					};
+					"multipart/form-data": {
+						/**
+						 * @description Missing Authorization header or invalid token
+						 * @example Missing Authorization header or invalid token
+						 */
+						error: string;
+					};
+					"text/plain": {
+						/**
+						 * @description Missing Authorization header or invalid token
+						 * @example Missing Authorization header or invalid token
+						 */
+						error: string;
+					};
+				};
+			};
+		};
+	};
 }
