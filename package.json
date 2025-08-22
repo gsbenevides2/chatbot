@@ -28,14 +28,13 @@
 		"@elysiajs/swagger": "github:gsbenevides2/elysia-swagger",
 		"@google-cloud/speech": "^7.2.0",
 		"@google-cloud/storage": "^7.17.0",
-		"@grotto/logysia": "^0.1.6",
+		"@modelcontextprotocol/sdk": "^1.17.4",
 		"@types/sharp": "^0.32.0",
 		"@web-bee-ru/openapi-axios": "^0.0.6",
 		"axios": "^1.11.0",
 		"elysia": "latest",
 		"sharp": "^0.34.3",
-		"tmp": "^0.2.5",
-		"@modelcontextprotocol/sdk": "^1.16.0"
+		"tmp": "^0.2.5"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.1.3",

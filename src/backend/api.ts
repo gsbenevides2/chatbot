@@ -1,22 +1,18 @@
 import { Elysia } from "elysia";
 import { ChatbotController } from "./controllers/Chatbot/Controller";
-import { AuthService } from "./services/AuthService";
+import { AuthService, UnauthorizedError } from "./services/AuthService";
 
 const api = new Elysia({
 	prefix: "/api",
 })
-	.onBeforeHandle(async ({ headers, status }) => {
+	.onBeforeHandle(async ({ headers }) => {
 		const token = headers?.authorization;
 		if (!token) {
-			return status(401, {
-				error: "Unauthorized",
-			});
+			throw new UnauthorizedError();
 		}
 		const decoded = await AuthService.verify(token);
 		if (!decoded) {
-			return status(401, {
-				error: "Unauthorized",
-			});
+			throw new UnauthorizedError();
 		}
 	})
 	.use(ChatbotController);
