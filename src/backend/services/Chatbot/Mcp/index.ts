@@ -45,7 +45,10 @@ export class Mcp {
 	public async getTools(forceRefresh: boolean = false) {
 		if (this.tools.length === 0 || forceRefresh) {
 			const connectedClient = await this.getConnectedClient();
-			const tools = await connectedClient.listTools();
+			const tools = await connectedClient.listTools(undefined, {
+				maxTotalTimeout: this.REQUEST_TIMEOUT,
+				timeout: this.REQUEST_TIMEOUT,
+			});
 			this.tools = tools.tools;
 		}
 		return this.tools;
