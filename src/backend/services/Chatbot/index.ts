@@ -1,7 +1,8 @@
 import { discordClient } from "../../clients/discord";
 import { AudioToText } from "../Google/AudioToText";
 import { PrepareAndUploadImage } from "../Google/PrepareAndUploadImage";
-import { AnthropicService } from "./Antropic";
+import { AnthropicService, type ToolResultContent } from "./Antropic";
+import { Mcp } from "./Mcp";
 
 type ReceivedMessage =
 	| {
@@ -50,6 +51,16 @@ export class ChatbotService {
 
 	async receiveMessage(message: ReceivedMessage) {
 		const anthropicService = new AnthropicService();
+		const mcpService = Mcp.getInstance();
+
+		const tools = await mcpService.getTools();
+		anthropicService.setTools(
+			tools.map((tool) => ({
+				input_schema: tool.inputSchema,
+				name: tool.name,
+				description: tool.description,
+			})),
+		);
 
 		let textMessage = "";
 		// Special for audio case
@@ -62,6 +73,7 @@ export class ChatbotService {
 		} else {
 			textMessage = message.message;
 		}
+		// Special for images case
 		const hasImages =
 			"images" in message && message.images && message.images.length > 0;
 		if (hasImages) {
@@ -75,7 +87,7 @@ export class ChatbotService {
 			anthropicService.addImagesToHistory(images);
 		}
 
-		// Continue
+		// Continue with the conversation
 		await this.sendMessage("Aguarde um momento, estou pensando...");
 		this.sendedMessageCounter = 1;
 
@@ -86,6 +98,14 @@ export class ChatbotService {
 				if (content.type === "text") {
 					await this.sendMessage(content.text);
 				} else if (content.type === "tool_use") {
+					const toolName = content.name;
+					const toolInput = content.input;
+					const toolUseID = content.id;
+					const toolResponse = await mcpService.callTool(toolName, toolInput);
+					anthropicService.addToolResultToHistory(
+						toolUseID,
+						toolResponse.content as ToolResultContent,
+					);
 				}
 			}
 
@@ -96,6 +116,7 @@ export class ChatbotService {
 					"Infelizmente, eu não tenho mais tokens para continuar a conversa. Por favor, tente novamente.",
 				);
 				break;
+			} else if (response.stop_reason === "tool_use") {
 			} else {
 				await this.sendMessage(
 					"Desculpe, mas eu não consegui processar sua mensagem. Por favor, tente novamente.",

@@ -34,7 +34,8 @@
 		"axios": "^1.11.0",
 		"elysia": "latest",
 		"sharp": "^0.34.3",
-		"tmp": "^0.2.5"
+		"tmp": "^0.2.5",
+		"@modelcontextprotocol/sdk": "^1.16.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.1.3",
