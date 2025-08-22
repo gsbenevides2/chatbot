@@ -30,6 +30,10 @@ export class Mcp {
 
 	private CLIENT_URL = getEnv("MCP_SERVER_ADDRESS");
 
+	public async connectAndSaveTools() {
+		await this.getTools();
+	}
+
 	public async getConnectedClient() {
 		if (!this.connected) {
 			console.log("Connecting to MCP server");
