@@ -32,11 +32,26 @@ export class Mcp {
 
 	public async getConnectedClient() {
 		if (!this.connected) {
-			await this.client.connect(
-				new StreamableHTTPClientTransport(new URL("/mcp", this.CLIENT_URL), {
-					authProvider: new EnvironmentOAuthProvider(),
-				}),
-			);
+			await this.client
+				.connect(
+					new StreamableHTTPClientTransport(new URL("/mcp", this.CLIENT_URL), {
+						authProvider: new EnvironmentOAuthProvider(),
+						reconnectionOptions: {
+							maxReconnectionDelay: this.REQUEST_TIMEOUT,
+							initialReconnectionDelay: this.REQUEST_TIMEOUT,
+							maxRetries: 10,
+							reconnectionDelayGrowFactor: 1.5,
+						},
+					}),
+					{
+						maxTotalTimeout: this.REQUEST_TIMEOUT,
+						timeout: this.REQUEST_TIMEOUT,
+					},
+				)
+				.catch((error) => {
+					console.error(error);
+					throw error;
+				});
 		}
 
 		return this.client;
