@@ -37,17 +37,7 @@ export class Mcp {
 				.connect(
 					new StreamableHTTPClientTransport(new URL("/mcp", this.CLIENT_URL), {
 						authProvider: new EnvironmentOAuthProvider(),
-						reconnectionOptions: {
-							maxReconnectionDelay: this.REQUEST_TIMEOUT,
-							initialReconnectionDelay: this.REQUEST_TIMEOUT,
-							maxRetries: 10,
-							reconnectionDelayGrowFactor: 1.5,
-						},
 					}),
-					{
-						maxTotalTimeout: this.REQUEST_TIMEOUT,
-						timeout: this.REQUEST_TIMEOUT,
-					},
 				)
 				.catch((error) => {
 					console.error("Error connecting to MCP server", error);
@@ -63,15 +53,10 @@ export class Mcp {
 		if (this.tools.length === 0 || forceRefresh) {
 			const connectedClient = await this.getConnectedClient();
 			console.log("Getting tools from MCP server");
-			const tools = await connectedClient
-				.listTools(undefined, {
-					maxTotalTimeout: this.REQUEST_TIMEOUT,
-					timeout: this.REQUEST_TIMEOUT,
-				})
-				.catch((error) => {
-					console.error("Error getting tools from MCP server", error);
-					throw error;
-				});
+			const tools = await connectedClient.listTools().catch((error) => {
+				console.error("Error getting tools from MCP server", error);
+				throw error;
+			});
 			console.log("Tools received from MCP server", tools.tools.length);
 			this.tools = tools.tools;
 		}
