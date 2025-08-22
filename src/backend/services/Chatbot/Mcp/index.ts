@@ -32,6 +32,7 @@ export class Mcp {
 
 	public async getConnectedClient() {
 		if (!this.connected) {
+			console.log("Connecting to MCP server");
 			await this.client
 				.connect(
 					new StreamableHTTPClientTransport(new URL("/mcp", this.CLIENT_URL), {
@@ -49,9 +50,10 @@ export class Mcp {
 					},
 				)
 				.catch((error) => {
-					console.error(error);
+					console.error("Error connecting to MCP server", error);
 					throw error;
 				});
+			console.log("Connected to MCP server");
 		}
 
 		return this.client;
