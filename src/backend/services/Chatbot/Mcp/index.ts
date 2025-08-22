@@ -36,10 +36,11 @@ export class Mcp {
 
 	public async getConnectedClient() {
 		if (!this.connected) {
-			console.log("Connecting to MCP server");
+			const url = new URL("/mcp", this.CLIENT_URL);
+			console.log("Connecting to MCP server", url.toString());
 			await this.client
 				.connect(
-					new StreamableHTTPClientTransport(new URL("/mcp", this.CLIENT_URL), {
+					new StreamableHTTPClientTransport(url, {
 						authProvider: new EnvironmentOAuthProvider(),
 					}),
 				)
