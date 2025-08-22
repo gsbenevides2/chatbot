@@ -3,6 +3,7 @@ import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/
 import { DEFAULT_REQUEST_TIMEOUT_MSEC } from "@modelcontextprotocol/sdk/shared/protocol.js";
 import { getEnv } from "../../../../utils/getEnv";
 import { EnvironmentOAuthProvider } from "./EnvironmentOAuthProvider";
+import { fetcherLogger } from "./fetcherLogger";
 
 type Tools = Awaited<
 	ReturnType<typeof SDKMCPClient.prototype.listTools>
@@ -42,6 +43,7 @@ export class Mcp {
 				.connect(
 					new StreamableHTTPClientTransport(url, {
 						authProvider: new EnvironmentOAuthProvider(),
+						fetch: fetcherLogger,
 					}),
 				)
 				.catch((error) => {
