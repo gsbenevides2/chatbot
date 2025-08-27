@@ -3,6 +3,7 @@ import type {
 	ImageBlockParam,
 	TextBlockParam,
 } from "@anthropic-ai/sdk/resources";
+import { MongoClient, ObjectId } from "mongodb";
 import { getEnv } from "../../../../utils/getEnv";
 
 const ANTHROPIC_API_KEY = getEnv("ANTHROPIC_API_KEY");
@@ -11,6 +12,19 @@ const ANTHROPIC_SYSTEM_PROMPT = await Bun.file("./prompt.md").text();
 const ANTHROPIC_MAX_TOKENS = Number(
 	getEnv("ANTHROPIC_MAX_TOKENS", false, "1000"),
 );
+
+const mongoClient = await MongoClient.connect(getEnv("MONGO_URI"), {
+	authSource: "chatbot",
+});
+
+const db = mongoClient.db("chatbot");
+interface Session {
+	_id: ObjectId;
+	createdAt: Date;
+	history: Anthropic.MessageParam[];
+}
+
+const collection = db.collection<Session>("sessions");
 
 export type ToolResultContent =
 	| Array<TextBlockParam | ImageBlockParam>
@@ -34,6 +48,8 @@ export class AnthropicService {
 			},
 		},
 	];
+
+	oldMessages: Anthropic.MessageParam[] = [];
 
 	messageHistory: Anthropic.MessageParam[] = [];
 
@@ -79,11 +95,39 @@ export class AnthropicService {
 		this.tools = tools;
 	}
 
+	async saveSession() {
+		const session = await collection.insertOne({
+			_id: new ObjectId(),
+			createdAt: new Date(),
+			history: this.messageHistory,
+		});
+		return session;
+	}
+
+	clearSession() {
+		this.messageHistory = [];
+		this.oldMessages = [];
+	}
+
+	async getLastThreeSessionsAndAppendToHistory() {
+		const sessions = await collection
+			.find({})
+			.sort({ createdAt: -1 })
+			.limit(3)
+			.toArray();
+
+		this.oldMessages = sessions.flatMap((session) => session.history);
+	}
+
+	getAllMessages() {
+		return [...this.oldMessages, ...this.messageHistory];
+	}
+
 	async getResponse() {
 		const response = await this.client.messages.create({
 			model: ANTHROPIC_MODEL,
 			system: this.systemPrompt,
-			messages: this.messageHistory,
+			messages: this.getAllMessages(),
 			max_tokens: ANTHROPIC_MAX_TOKENS,
 			tools: this.tools,
 		});

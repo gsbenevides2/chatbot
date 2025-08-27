@@ -33,6 +33,7 @@
 		"@web-bee-ru/openapi-axios": "^0.0.6",
 		"axios": "^1.11.0",
 		"elysia": "latest",
+		"mongodb": "^6.19.0",
 		"sharp": "^0.34.3",
 		"tmp": "^0.2.5"
 	},

@@ -90,7 +90,7 @@ export class ChatbotService {
 		// Continue with the conversation
 		await this.sendMessage("Aguarde um momento, estou pensando...");
 		this.sendedMessageCounter = 1;
-
+		await anthropicService.getLastThreeSessionsAndAppendToHistory();
 		anthropicService.addUserMessageToHistory(textMessage);
 		while (true) {
 			const response = await anthropicService.getResponse();
@@ -124,6 +124,9 @@ export class ChatbotService {
 				break;
 			}
 		}
+
+		await anthropicService.saveSession();
+		anthropicService.clearSession();
 	}
 
 	async sendErrorMessage() {
