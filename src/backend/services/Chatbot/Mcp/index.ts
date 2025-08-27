@@ -51,6 +51,11 @@ export class Mcp {
 					throw error;
 				});
 			console.log("Connected to MCP server");
+			this.client.onclose = () => {
+				console.log("Disconnected from MCP server");
+				this.connected = false;
+				this.tools = [];
+			};
 		}
 
 		return this.client;
