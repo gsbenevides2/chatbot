@@ -96,12 +96,11 @@ export class AnthropicService {
 	}
 
 	async saveSession() {
-		const session = await collection.insertOne({
+		await collection.insertOne({
 			_id: new ObjectId(),
 			createdAt: new Date(),
 			history: this.messageHistory,
 		});
-		return session;
 	}
 
 	clearSession() {

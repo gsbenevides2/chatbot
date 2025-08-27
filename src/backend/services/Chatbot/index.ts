@@ -92,7 +92,7 @@ export class ChatbotService {
 		this.sendedMessageCounter = 1;
 		await anthropicService.getLastThreeSessionsAndAppendToHistory();
 		anthropicService.addUserMessageToHistory(textMessage);
-		while (true) {
+		const messageLoop = async () => {
 			const response = await anthropicService.getResponse();
 			for (const content of response.content) {
 				if (content.type === "text") {
@@ -110,21 +110,22 @@ export class ChatbotService {
 			}
 
 			if (response.stop_reason === "end_turn") {
-				break;
+				return;
 			} else if (response.stop_reason === "max_tokens") {
 				await this.sendMessage(
 					"Infelizmente, eu não tenho mais tokens para continuar a conversa. Por favor, tente novamente.",
 				);
-				break;
+				return;
 			} else if (response.stop_reason === "tool_use") {
+				await messageLoop();
 			} else {
 				await this.sendMessage(
 					"Desculpe, mas eu não consegui processar sua mensagem. Por favor, tente novamente.",
 				);
-				break;
+				return;
 			}
-		}
-
+		};
+		await messageLoop();
 		await anthropicService.saveSession();
 		anthropicService.clearSession();
 	}
