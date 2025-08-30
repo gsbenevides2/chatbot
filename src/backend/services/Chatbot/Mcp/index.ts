@@ -93,4 +93,10 @@ export class Mcp {
 			},
 		);
 	}
+
+	public async disconnect() {
+		await this.client.close();
+		this.connected = false;
+		this.tools = [];
+	}
 }

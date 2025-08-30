@@ -142,6 +142,7 @@ export class ChatbotService {
 			}
 		};
 		await messageLoop();
+		await mcpService.disconnect();
 		if (!this.settings.systemsMode) {
 			await anthropicService.saveSession();
 			anthropicService.clearSession();
