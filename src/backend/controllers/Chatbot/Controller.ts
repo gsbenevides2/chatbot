@@ -16,7 +16,9 @@ export const ChatbotController = new Elysia({
 	.post(
 		"/",
 		({ body, status }) => {
-			const chatbotService = new ChatbotService();
+			const chatbotService = new ChatbotService(
+				"settings" in body ? body.settings : undefined,
+			);
 			chatbotService.receiveMessage(body).catch((error) => {
 				console.error(error);
 				chatbotService.sendErrorMessage();
@@ -47,6 +49,22 @@ export const ChatbotController = new Elysia({
 										title: "Images",
 										description: "The images to be sent to the chatbot",
 										examples: [["https://example.com/image.png"]],
+									},
+								),
+							),
+							settings: t.Optional(
+								t.Object(
+									{
+										systemsMode: t.Boolean({
+											title: "Systems mode",
+											description: "Whether to use the systems mode",
+											examples: [true],
+										}),
+									},
+									{
+										title: "Settings",
+										description: "Settings for the chatbot",
+										examples: [{ systemsMode: true }],
 									},
 								),
 							),

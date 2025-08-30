@@ -8,16 +8,30 @@ type ReceivedMessage =
 	| {
 			message: string;
 			images?: string[];
+			settings?: Settings;
 	  }
 	| {
 			audio: string;
 	  };
 
+type Settings = {
+	systemsMode: boolean;
+};
+
+const defaultSettings: Settings = {
+	systemsMode: false,
+};
+
 export class ChatbotService {
 	sendedMessageCounter = 0;
 	firstMessageId: string | null = null;
 
+	constructor(private readonly settings: Settings = defaultSettings) {
+		this.settings = settings;
+	}
+
 	async sendMessage(message: string) {
+		if (this.settings.systemsMode) return;
 		if (this.sendedMessageCounter === 0) {
 			const firstMessage = await discordClient.post(`/api/messages/`, {
 				message: message,
